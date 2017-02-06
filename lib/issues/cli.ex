@@ -32,6 +32,15 @@ defmodule Issues.CLI do
 
   def process({user, project, _count}) do
     Issues.GithubIssues.fetch(user, project)
+    |> convert_list_to_hashdicts
+    |> sort_into_ascending_order
   end
 
+  def convert_list_to_hashdicts(list) do
+    Enum.map(list, &Enum.into(&1, HashDict.new))
+  end
+
+  def sort_into_ascending_order(issues) do
+    Enum.sort(issues, fn i1, i2 -> i1["created_at"] <= i2["created_at"] end)
+  end
 end
