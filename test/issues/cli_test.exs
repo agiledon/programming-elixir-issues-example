@@ -1,4 +1,4 @@
-defmodule CliTest do
+defmodule Issues.CliTest do
   use ExUnit.Case
 
   import Issues.CLI, only: [

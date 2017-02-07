@@ -1,4 +1,4 @@
-defmodule Issues.TableFormater do
+defmodule Issues.TableFormatter do
   @moduledoc false
 
   import Enum, only: [each: 2, map: 2, map_join: 3, max: 1]
@@ -12,7 +12,7 @@ defmodule Issues.TableFormater do
     puts_in_columns data_by_columns, format
   end
 
-  defp split_into_columns(rows, headers) do
+  def split_into_columns(rows, headers) do
     for header <- headers do
       for row <- rows, do: printable(row[header])
     end
@@ -21,11 +21,11 @@ defmodule Issues.TableFormater do
   defp printable(value) when is_binary(value), do: value
   defp printable(value), do: to_string(value)
 
-  defp widths_of(columns) do
+  def widths_of(columns) do
     for column <- columns, do: column |> map(&String.length/1) |> max  #get max for each column
   end
 
-  defp format_for(column_widths) do
+  def format_for(column_widths) do
     map_join(column_widths, " | ", fn width -> "~-#{width}s" end) <> "~n"
   end
   defp separator(column_widths) do
