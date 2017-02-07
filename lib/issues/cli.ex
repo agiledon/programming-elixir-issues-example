@@ -1,5 +1,6 @@
 defmodule Issues.CLI do
   @default_count 4
+  import Issues.TableFormater, only: [print_table_for_columns: 2]
 
   @moduledoc """
   Handle the command line parsing and the dispatch to
@@ -30,10 +31,12 @@ defmodule Issues.CLI do
     System.halt(0)
   end
 
-  def process({user, project, _count}) do
+  def process({user, project, count}) do
     Issues.GithubIssues.fetch(user, project)
     |> convert_list_to_hashdicts
     |> sort_into_ascending_order
+    |> Enum.take(count)
+    |> print_table_for_columns(["number", "created_at", "title"])
   end
 
   def convert_list_to_hashdicts(list) do
